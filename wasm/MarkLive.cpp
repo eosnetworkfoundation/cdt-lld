@@ -106,7 +106,13 @@ void lld::wasm::markLive() {
         }
      }
      for (const auto& import : wasmObj->imports()) {
-        enqueue(symtab->find(import.Field));
+        if (auto* sym = symtab->find(import.Field)) {
+          for (const auto& allowed : wasmObj->allowed_imports()) {
+            if (allowed == sym->getName()) {
+              enqueue(sym);
+            }
+          }
+        }
      }
   }
 
