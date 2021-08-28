@@ -29,6 +29,7 @@
 #include "llvm/Support/Process.h"
 #include "llvm/Support/TarWriter.h"
 #include "llvm/Support/TargetSelect.h"
+#include "llvm/Support/FileUtilities.h"
 
 #define DEBUG_TYPE "lld"
 
@@ -706,6 +707,11 @@ void LinkerDriver::link(ArrayRef<const char *> argsArr) {
 
   if (auto *arg = args.getLastArg(OPT_allow_undefined_file))
     readImportFile(arg->getValue());
+  
+  if (args.hasArg(OPT_eosio_link_dirs)){
+    message("Library paths:");
+    llvm::printOptions("", config->searchPaths, outs(), errs());
+  }
 
   if (!args.hasArg(OPT_INPUT)) {
     error("no input files");
