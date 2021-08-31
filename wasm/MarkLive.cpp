@@ -107,12 +107,9 @@ void lld::wasm::markLive() {
         }
      }
      for (const auto& import : wasmObj->imports()) {
-        if (auto* sym = symtab->find(import.Field)) {
-          for (const auto& allowed : wasmObj->allowed_imports()) {
-            if (allowed == sym->getName()) {
-              enqueue(sym);
-            }
-          }
+        if (import.Field == "__wasm_call_ctors" || import.Field == "__cxa_finalize" ||
+            std::find(wasmObj->allowed_imports().begin(), wasmObj->allowed_imports().end(), import.Field) != wasmObj->allowed_imports().end()) {
+           enqueue(symtab->find(import.Field));
         }
      }
   }
