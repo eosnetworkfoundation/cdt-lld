@@ -92,17 +92,19 @@ void lld::wasm::markLive() {
         if (func.SymbolName == "pre_dispatch" || func.SymbolName == "post_dispatch" || func.SymbolName == "eosio_assert_code" ||
             func.SymbolName == "eosio_set_contract_name") {
            enqueue(symtab->find(func.SymbolName));
-           }
-
+           continue;
+        }
         for (const auto& action : wasmObj->actions()) {
            if (func.SymbolName == action.substr(action.find(":")+1)) {
               enqueue(symtab->find(func.SymbolName));
+              break;
            }
         }
         for (const auto& notify : wasmObj->notify()) {
            std::string sub = notify.substr(notify.find(":")+2);
            if (func.SymbolName == sub.substr(sub.find(":")+1)) {
               enqueue(symtab->find(func.SymbolName));
+              break;
            }
         }
      }
