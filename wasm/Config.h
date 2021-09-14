@@ -38,6 +38,7 @@ struct Configuration {
   bool passiveSegments;
   bool importTable;
   bool mergeDataSegments;
+  bool noAbigen;
   bool pie;
   bool printGcSections;
   bool relocatable;
