@@ -1278,7 +1278,10 @@ void Writer::run(bool undefinedEntry) {
   if (errorCount())
     return;
 
-  writeABI();
+  if (!config->noAbigen) {
+    writeABI();
+  }
+
   if (Error e = buffer->commit())
     fatal("failed to write the output file: " + toString(std::move(e)));
 }

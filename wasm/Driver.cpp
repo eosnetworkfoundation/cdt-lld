@@ -310,6 +310,7 @@ static void readConfigs(opt::InputArgList &args) {
       args.hasFlag(OPT_check_features, OPT_no_check_features, true);
   config->compressRelocations = args.hasArg(OPT_compress_relocations);
   config->demangle = args.hasFlag(OPT_demangle, OPT_no_demangle, true);
+  config->noAbigen = args.hasArg(OPT_no_abigen);
   config->disableVerify = args.hasArg(OPT_disable_verify);
   config->emitRelocs = args.hasArg(OPT_emit_relocs);
   config->entry = getEntry(args);
