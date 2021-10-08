@@ -530,7 +530,7 @@ void Writer::calculateExports() {
 
   for (Symbol *sym : symtab->getSymbols()) {
     if (!sym->isDefined()) continue;
-    if (sym->isHidden() && !config->exportAll) continue;
+    if (sym->isHidden() && !config->exportAll && !sym->isExported()) continue;
     if (sym->isLocal()) continue;
     if (!sym->isLive()) continue;
 
