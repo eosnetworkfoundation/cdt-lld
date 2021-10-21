@@ -530,7 +530,7 @@ void Writer::calculateExports() {
 
   for (Symbol *sym : symtab->getSymbols()) {
     if (!sym->isDefined()) continue;
-    if (sym->isHidden() && !config->exportAll) continue;
+    if (sym->isHidden() && !config->exportAll && !sym->isExported()) continue;
     if (sym->isLocal()) continue;
     if (!sym->isLive()) continue;
 
@@ -1124,7 +1124,7 @@ void Writer::createDispatchFunction() {
 
       // create ctors call
       auto ctors_sym = (FunctionSymbol*)symtab->find("__wasm_call_ctors");
-      if (ctors_sym) {
+      if (ctors_sym && ctors_sym->hasFunctionIndex()) {  
          uint32_t ctors_idx = ctors_sym->getFunctionIndex();
          if (ctors_idx != 0) {
             writeU8(OS, OPCODE_CALL, "CALL");
