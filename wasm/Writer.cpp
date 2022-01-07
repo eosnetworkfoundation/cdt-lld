@@ -1116,11 +1116,13 @@ void Writer::createDispatchFunction() {
       writeUleb128(OS, 0, "num locals");
 
       auto contract_sym = (FunctionSymbol*)symtab->find("eosio_set_contract_name");
-      uint32_t contract_idx = contract_sym->getFunctionIndex();
-      writeU8(OS, OPCODE_GET_LOCAL, "GET_LOCAL");
-      writeUleb128(OS, 0, "receiver");
-      writeU8(OS, OPCODE_CALL, "CALL");
-      writeUleb128(OS, contract_idx, "eosio_set_contract_name");
+      if (contract_sym->hasFunctionIndex()) {
+        uint32_t contract_idx = contract_sym->getFunctionIndex();
+        writeU8(OS, OPCODE_GET_LOCAL, "GET_LOCAL");
+        writeUleb128(OS, 0, "receiver");
+        writeU8(OS, OPCODE_CALL, "CALL");
+        writeUleb128(OS, contract_idx, "eosio_set_contract_name");
+      }
 
       // create ctors call
       auto ctors_sym = (FunctionSymbol*)symtab->find("__wasm_call_ctors");
